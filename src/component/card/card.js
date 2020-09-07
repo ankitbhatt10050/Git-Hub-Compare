@@ -4,15 +4,16 @@ import Star from './Star/Star'
 
 const { Meta } = Card;
 
-const card=()=>{
+const card=(props)=>{
+  console.log(props)
     return(
         
         <Card 
               hoverable
               style={{ width: 240 ,height:"auto"}}
-              cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+              cover={<img alt="example" src={props.data.avatar_url} />}
             >
-              <Meta title="Europe Street beat" description="www.instagram.com" />
+              <Meta title={props.data.login} description={props.data.bio} />
               <Star/>
           </Card>
     )
