@@ -6,17 +6,21 @@ const { Meta } = Card;
 
 const card=(props)=>{
   
-  const userData=props.data.data
+  const userData=props.data.data;
+  
     return(
-        
+        <div>
         <Card 
               hoverable
-              style={{ width: 240 ,height:"auto"}}
+              style={{ width: 240 ,height:410}}
               cover={<img alt="example" src={userData.avatar_url} />}
             >
               <Meta title={userData.login} description={userData.bio} />
-              <Star/>
+              <Star data={userData}/>
+              
           </Card>
+          
+        </div>
     )
 }
 

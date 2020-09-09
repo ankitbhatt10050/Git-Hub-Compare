@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import{notification} from 'antd';
 
 //To add data asynchronously  in redux
 //cause function call inside reducer will not wait for axios to complete
@@ -18,8 +18,9 @@ export const initUser=(userName)=>{
         .then(res=>{
             dispatch(setUser(res));
         }).catch(err =>{
-            console.log(err);
-            alert('User Not Found');
+            // console.log(err);
+            // alert('');
+            notification.error({message:"User Not Found"})
         })
 
     };

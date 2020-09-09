@@ -68,7 +68,9 @@ const reducer=(state=initState,action)=>{
             };
 
         case 'removeUser':
-        const newUsers=state.user.filter(userData=>userData.data.login!==action.login)
+            console.log('To delete data',action.data);
+            console.log('data in redux',state.user);
+        const newUsers=state.user.filter(userData=>userData.data.login!==action.data.login)
         return{
             user:newUsers
         };

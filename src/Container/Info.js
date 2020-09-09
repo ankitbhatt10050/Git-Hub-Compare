@@ -1,59 +1,60 @@
-import React, { Component } from 'react';
+import React, {useState, useEffect } from 'react';
 import Axios from 'axios';
+import {connect} from 'react-redux';
+import { Redirect, Link } from 'react-router-dom';
 
 
+function Info(props) {
 
-class Info extends Component{
+    
+    const[info,setInfo]=useState();
+    
 
-    state={
-        info:[]
-    }
-
-    componentDidMount()
-    {
-        Axios.get("https://api.github.com/users/"+this.props.match.params.login)
-        .then(info=>{
-            console.log('axios',info.data.login);
-            
-            this.setState({info:info.data})
-
+    useEffect(()=>{
+        
+        Axios.get("https://api.github.com/users/"+props.match.params.login)
+        .then(res=>{         
+            setInfo(res);
         });
+
+        },[]);
+    
+    
+    const removeUser=()=>{
+        console.log('user Removed')
+        props.removeUserFromRedux(info.data);
+        props.history.push("/");
         
     }
 
 
-
-    render(){
-
-       console.log( this.state.info.public_repos);
-        const userData = this.state.info?(
+        const userData = (info)?(
              
             <div>
                 <h4 style={{textAlign:"center"}}>
-                    {this.state.info.name}
+                    {info.data.name}
                 </h4>
                     <p>
-                        {this.state.info.bio}
+                        {info.data.bio}
                     </p>
-                 <div style={{textAlign:"center"}}>
-                      <button style={{ width:"80px", height:"28px"}} >Delete</button>
-                </div>  
+                   
                 <div>
-                    {this.state.info.blog}
-                   <p>Location:-{this.state.info.location}</p> 
-                   <p>Follower:- {this.state.info.follower}</p>
-                   <p>Following:-{this.state.info.following}</p>
-                   <p>Repos:-{this.state.info.public_repos}</p>
-                   <p>Gists:-{this.state.info.public_gists}</p>
+                    {info.blog}
+                   <p>Location:-{info.data.location}</p> 
+                   <p>Follower:- {info.data.follower}</p>
+                   <p>Following:-{info.data.following}</p>
+                   <p>Repos:-{info.data.public_repos}</p>
+                   <p>Gists:-{info.data.public_gists}</p>
                 </div>
-
+                <div style={{textAlign:"center"}}>
+                     <button onClick={()=>removeUser()} style={{ width:"80px", height:"28px"}} >Delete</button>
+                </div>
             </div>
             
            
-    ):
-    (<div style={{textAlign:"center"}}>Loading Post...</div>)
+    ): (<div style={{textAlign:"center"}}>Loading Post...</div>)
 
-    console.log()
+    
     return(
         
         <div>
@@ -61,6 +62,12 @@ class Info extends Component{
         </div>
     );
 }
+
+const mapDispatchToProps=dispatch=>{
+    return{
+        removeUserFromRedux:(data)=>dispatch({type:'removeUser',data:data})
+    }
 }
 
-export default Info;
+
+export default connect(null,mapDispatchToProps)(Info);
